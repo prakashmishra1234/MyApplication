@@ -15,8 +15,12 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
             if(intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     Log.d("After Reboot", "Broadcast Receiver Started the service");
+
+                    // Starting foreground service after restarting device
+                    /*
                     Intent serviceIntent = new Intent(context, MyForegroundService.class);
                     context.startForegroundService(serviceIntent);
+                    */
                 }
             }
         }catch(NullPointerException e){

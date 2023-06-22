@@ -7,6 +7,9 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import java.util.concurrent.TimeUnit;
 
@@ -22,6 +25,21 @@ public class MainActivity extends AppCompatActivity {
         WorkManager workManger =  WorkManager.getInstance(MainActivity.this);
         PeriodicWorkRequest uploadWorkRequest =
              new PeriodicWorkRequest.Builder(UploadWorker.class, 15 , TimeUnit.MINUTES).build();
-        workManger.enqueue(uploadWorkRequest);
+
+        // switch to start work manager
+        Switch switchButton = findViewById(R.id.switch1);
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Log.d("switchButton", "Switch button "+isChecked);
+                    workManger.enqueue(uploadWorkRequest);
+                }else{
+                    Log.d("switchButton", "onCheckedChanged: "+ workManger);
+                    workManger.cancelAllWork();
+                    Log.d("switchButton", "Switch button "+isChecked);
+                }
+            }
+        });
     }
 }

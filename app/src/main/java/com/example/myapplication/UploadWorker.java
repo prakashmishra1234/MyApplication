@@ -23,26 +23,21 @@ public class UploadWorker extends Worker {
 
         //specify your work here
         try{
-            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                @Override
-                public void run() {
+            Log.d("Work manager Status wm", "Work manager is running successfully");
 
-                    Log.d("Work manager Status", "Work manager is running successfully");
+            //Checking foreground service running status
+            boolean IsForegroundServiceRunning = isForegroundServiceRunning(getApplicationContext());
+            Log.d("Work manager Status wm", Boolean.toString(IsForegroundServiceRunning));
 
-                    //Checking foreground service running status
-                    boolean IsForegroundServiceRunning = isForegroundServiceRunning(getApplicationContext());
-                    Log.d("foreground Service Status", Boolean.toString(IsForegroundServiceRunning));
-
-                    // Starting Foreground Service if not running
-                    if(!IsForegroundServiceRunning){
-                        Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
-                        ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
-                    }
-                }
-            });
+            // Starting Foreground Service if not running
+            if(!IsForegroundServiceRunning){
+                Log.d("Work manager Status wm", "Foreground service started");
+                Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
+                ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
+            }
             return Result.success();
         }catch (Exception io){
-            Log.d("work", "doWork" + "working has not started");
+            Log.d("work manager fail service", "doWork" + "working has not started");
             return Result.failure();
         }
     }
