@@ -20,7 +20,7 @@ public class MyForegroundService extends Service {
                     @Override
                     public void run() {
                         while (true) {
-                            Log.e("myService", "Service is running...");
+                            Log.e("myService", "Foreground Service is running...");
                             try {
                                 Thread.sleep(2000);
                             } catch (InterruptedException e) {
@@ -30,7 +30,6 @@ public class MyForegroundService extends Service {
                     }
                 }
         ).start();
-
         final String CHANNEL_ID = "Foreground Service ID";
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
