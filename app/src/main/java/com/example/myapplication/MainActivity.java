@@ -3,15 +3,12 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
                     workManger.enqueue(uploadWorkRequest);
                 }else{
                     Log.d("MyApplication Logs for services", "Switch button is on "+ isChecked);
-                    // UUID workRequestId = uploadWorkRequest.getId();
                     workManger.cancelAllWorkByTag("myPeriodicRequest");
                     stopService(new Intent(getApplicationContext(), MyForegroundService.class));
                 }

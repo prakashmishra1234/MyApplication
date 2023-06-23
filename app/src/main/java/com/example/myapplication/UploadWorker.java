@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+
+import android.os.Build;
 import android.util.Log;
 import java.util.List;
 
@@ -29,14 +31,12 @@ public class UploadWorker extends Worker {
 
             // Starting Foreground Service if not running
             if(!IsForegroundServiceRunning){
-                Log.d("MyApplication Logs for services", "Foreground service started");
-                Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
-                ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
+//                Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
+//                ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
+                startForegroundService();
             }
-
             return Result.success();
         }catch (Exception exception){
-            Log.d("MyApplication Logs for services", "do Work exception " + "working has not started");
             Log.d("MyApplication Logs for services", "Exception do work "+ exception.toString());
             return Result.failure();
         }
@@ -54,5 +54,19 @@ public class UploadWorker extends Worker {
             }
         }
         return false;
+    }
+
+    // method to start foreground service
+    private void startForegroundService (){
+        Context context = getApplicationContext();
+        Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            Log.d("MyApplication Logs for services", "Foreground service started by start foreground service");
+            context.startForegroundService(serviceIntent);
+        }else{
+            Log.d("MyApplication Logs for services", "Foreground service started by start service");
+            context.startService(serviceIntent);
+        }
     }
 }
