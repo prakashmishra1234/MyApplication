@@ -2,12 +2,10 @@ package com.example.myapplication;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import android.os.Handler;
 import android.util.Log;
 import java.util.List;
 
@@ -23,21 +21,23 @@ public class UploadWorker extends Worker {
 
         //specify your work here
         try{
-            Log.d("Work manager Status wm", "Work manager is running successfully");
+            Log.d("MyApplication Logs for services", "Work manager is running successfully");
 
             //Checking foreground service running status
             boolean IsForegroundServiceRunning = isForegroundServiceRunning(getApplicationContext());
-            Log.d("Work manager Status wm", Boolean.toString(IsForegroundServiceRunning));
+            Log.d("MyApplication Logs for services", "is foreground service running "+ Boolean.toString(IsForegroundServiceRunning));
 
             // Starting Foreground Service if not running
             if(!IsForegroundServiceRunning){
-                Log.d("Work manager Status wm", "Foreground service started");
+                Log.d("MyApplication Logs for services", "Foreground service started");
                 Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
                 ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
             }
+
             return Result.success();
-        }catch (Exception io){
-            Log.d("work manager fail service", "doWork" + "working has not started");
+        }catch (Exception exception){
+            Log.d("MyApplication Logs for services", "do Work exception " + "working has not started");
+            Log.d("MyApplication Logs for services", "Exception do work "+ exception.toString());
             return Result.failure();
         }
     }

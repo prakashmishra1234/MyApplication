@@ -3,14 +3,15 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
-import android.app.ActivityManager;
-import android.content.Context;
+
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,8 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Work Manager
         WorkManager workManger =  WorkManager.getInstance(MainActivity.this);
-        PeriodicWorkRequest uploadWorkRequest =
-             new PeriodicWorkRequest.Builder(UploadWorker.class, 15 , TimeUnit.MINUTES).build();
 
         // switch to start work manager
         Switch switchButton = findViewById(R.id.switch1);
@@ -32,12 +31,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    Log.d("switchButton", "Switch button "+isChecked);
+                    Log.d("MyApplication Logs for services", "Switch button is on "+isChecked);
+                    PeriodicWorkRequest uploadWorkRequest =
+                            new PeriodicWorkRequest.Builder(UploadWorker.class, 15 , TimeUnit.MINUTES)
+                                    .addTag("myPeriodicRequest").build();
                     workManger.enqueue(uploadWorkRequest);
                 }else{
-                    Log.d("switchButton", "onCheckedChanged: "+ workManger);
-                    workManger.cancelAllWork();
-                    Log.d("switchButton", "Switch button "+isChecked);
+                    Log.d("MyApplication Logs for services", "Switch button is on "+ isChecked);
+                    // UUID workRequestId = uploadWorkRequest.getId();
+                    workManger.cancelAllWorkByTag("myPeriodicRequest");
+                    stopService(new Intent(getApplicationContext(), MyForegroundService.class));
                 }
             }
         });

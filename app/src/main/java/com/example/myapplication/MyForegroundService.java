@@ -20,7 +20,7 @@ public class MyForegroundService extends Service {
                     @Override
                     public void run() {
                         while (true) {
-                            Log.e("myService", "Foreground Service is running...");
+                           // Log.e("MyApplication Logs for services", "Foreground Service is running...");
                             try {
                                 Thread.sleep(2000);
                             } catch (InterruptedException e) {
