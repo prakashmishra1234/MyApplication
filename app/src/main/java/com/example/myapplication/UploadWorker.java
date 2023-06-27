@@ -3,7 +3,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -31,8 +30,6 @@ public class UploadWorker extends Worker {
 
             // Starting Foreground Service if not running
             if(!IsForegroundServiceRunning){
-//                Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
-//                ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
                 startForegroundService();
             }
             return Result.success();
@@ -60,7 +57,6 @@ public class UploadWorker extends Worker {
     private void startForegroundService (){
         Context context = getApplicationContext();
         Intent serviceIntent = new Intent(getApplicationContext(), MyForegroundService.class);
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             Log.d("MyApplication Logs for services", "Foreground service started by start foreground service");
             context.startForegroundService(serviceIntent);
